@@ -1,26 +1,25 @@
 #!/usr/bin/python3
 """
-Using a REST API and a given employee ID,
-return information about their TODO list.
+Fetches and displays an employee's TODO list progress using a REST API.
 """
 
-import sys
 import requests
+import sys
 
 if __name__ == "__main__":
     employee_id = int(sys.argv[1])
     base_url = "https://jsonplaceholder.typicode.com"
 
-    # Get employee information
-    user = requests.get(f"{base_url}/users/{employee_id}").json()
+    # Fetch user info
+    user = requests.get("{}/users/{}".format(base_url, employee_id)).json()
     employee_name = user.get("name")
 
-    # Get todos
-    todos = requests.get(f"{base_url}/todos?userId={employee_id}").json()
+    # Fetch todos
+    todos = requests.get("{}/todos?userId={}".format(base_url, employee_id)).json()
     total_tasks = len(todos)
     completed_tasks = [task for task in todos if task.get("completed")]
 
-    # Print required output
+    # Output
     print("Employee {} is done with tasks({}/{}):".format(
         employee_name, len(completed_tasks), total_tasks))
 
