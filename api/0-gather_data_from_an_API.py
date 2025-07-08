@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
 0-gather_data_from_an_API.py
+Fetch employee TODO list progress from a REST API.
 """
 
 import requests
@@ -39,3 +40,4 @@ if len(sys.argv) != 2:
                                                 for task in done_tasks:
                                                         title = task.get("title", "").strip()
                                                             print(f"\t {title}")
+
