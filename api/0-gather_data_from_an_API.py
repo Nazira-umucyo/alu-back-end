@@ -40,4 +40,3 @@ if len(sys.argv) != 2:
                                                 for task in done_tasks:
                                                         title = task.get("title", "").strip()
                                                             print(f"\t {title}")
-
