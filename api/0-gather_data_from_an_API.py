@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Fetches and displays an employee's TODO list progress from an API."""
+
 import requests
 import sys
 
