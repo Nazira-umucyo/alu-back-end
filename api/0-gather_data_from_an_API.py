@@ -47,4 +47,3 @@ if len(sys.argv) != 2:
                                                 # ✅ Print tasks, formatted correctly
                                                 for task in done_tasks:
                                                         print("\t {}".format(task.get("title", "").strip()))
-
