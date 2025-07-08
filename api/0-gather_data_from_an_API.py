@@ -1,34 +1,27 @@
 #!/usr/bin/python3
 """
-Script that uses a REST API to return information
-about an employee's TODO list progress.
+Using a REST API, and a given emp_ID, return info about their TODO list.
 """
-
 import requests
 import sys
 
+
 if __name__ == "__main__":
-        employee_id = int(sys.argv[1])
+    """ main section """
+    BASE_URL = 'https://jsonplaceholder.typicode.com'
+    employee = requests.get(
+        BASE_URL + f'/users/{sys.argv[1]}/').json()
+    EMPLOYEE_NAME = employee.get("name")
+    employee_todos = requests.get(
+        BASE_URL + f'/users/{sys.argv[1]}/todos').json()
+    serialized_todos = {}
 
-            # Base URL
-                base_url = "https://jsonplaceholder.typicode.com"
+    for todo in employee_todos:
+        serialized_todos.update({todo.get("title"): todo.get("completed")})
 
-                    # Get user info
-                        user_url = f"{base_url}/users/{employee_id}"
-                            user = requests.get(user_url).json()
-                                employee_name = user.get("name")
-
-                                    # Get tasks
-                                        todos_url = f"{base_url}/todos?userId={employee_id}"
-                                            todos = requests.get(todos_url).json()
-
-                                                # Filter completed tasks
-                                                    completed_tasks = [task for task in todos if task.get("completed")]
-                                                        num_done = len(completed_tasks)
-                                                            total_tasks = len(todos)
-
-                                                                # Print the required output
-                                                                    print("Employee {} is done with tasks({}/{}):".format(
-                                                                                employee_name, num_done, total_tasks))
-                                                                        for task in completed_tasks:
-                                                                                    print("\t {}".format(task.get("title")))
+    COMPLETED_LEN = len([k for k, v in serialized_todos.items() if v is True])
+    print("Employee {} is done with tasks({}/{}):".format(
+        EMPLOYEE_NAME, COMPLETED_LEN, len(serialized_todos)))
+    for key, val in serialized_todos.items():
+        if val is True:
+            print("\t {}".format(key))
