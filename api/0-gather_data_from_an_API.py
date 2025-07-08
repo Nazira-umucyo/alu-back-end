@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 0-gather_data_from_an_API.py
-Fetch employee TODO list progress from a REST API.
+Fetch employee TODO list progress from JSONPlaceholder API.
 """
 
 import requests
@@ -20,30 +20,34 @@ if len(sys.argv) != 2:
 
                         base_url = "https://jsonplaceholder.typicode.com"
 
-                        # Get employee data
-                        user_response = requests.get("{}/users/{}".format(base_url, employee_id))
+                        # Get user information
+                        user_url = "{}/users/{}".format(base_url, employee_id)
+                        user_response = requests.get(user_url)
                         if user_response.status_code != 200:
-                                print("Employee not found")
+                                print("User not found")
                                     sys.exit(1)
 
                                     user_data = user_response.json()
                                     employee_name = user_data.get("name", "").strip()
 
-                                    # Get TODOs
-                                    todos_response = requests.get("{}/todos".format(base_url), params={"userId": employee_id})
+                                    # Get todos
+                                    todos_url = "{}/todos".format(base_url)
+                                    todos_response = requests.get(todos_url, params={"userId": employee_id})
                                     if todos_response.status_code != 200:
-                                            print("Failed to retrieve TODO list")
+                                            print("Failed to fetch tasks")
                                                 sys.exit(1)
 
                                                 todos = todos_response.json()
 
+                                                # Count completed tasks
                                                 total_tasks = len(todos)
                                                 done_tasks = [task for task in todos if task.get("completed") is True]
-                                                number_done = len(done_tasks)
+                                                done_count = len(done_tasks)
 
-                                                # ✅ Print first line with correct spacing
-                                                print("Employee {} is done with tasks({}/{}):".format(employee_name, number_done, total_tasks))
+                                                # Print result
+                                                print("Employee {} is done with tasks({}/{}):".format(
+                                                        employee_name, done_count, total_tasks))
 
-                                                # ✅ Print tasks, formatted correctly
                                                 for task in done_tasks:
-                                                        print("\t {}".format(task.get("title", "").strip()))
+                                                        title = task.get("title", "").strip()
+                                                            print("\t {}".format(title))
