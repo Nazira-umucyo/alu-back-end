@@ -4,8 +4,8 @@ Using a REST API and a given employee ID,
 return information about their TODO list.
 """
 
-import sys
 import requests
+import sys
 
 if __name__ == "__main__":
     employee_id = int(sys.argv[1])
